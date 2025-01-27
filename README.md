@@ -1,2 +1,2 @@
-# Gmail_Automation
-A set of functions to access the Gmail API and do tedious tasks automatically
+# Daily Chapter
+An app to email out sections of public domain books at a set interval.
