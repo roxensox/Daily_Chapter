@@ -2,10 +2,11 @@ import os.path
 import base64
 import json
 import quickstart as qs
+from email_body_class import HTMLBody
+from book_class import Book
 from google.auth.transport.requests import Request
 from googleapiclient.errors import HttpError
 from email.message import EmailMessage
-from testing import error_report
 
 
 def get_user_email(session: object) -> str:
