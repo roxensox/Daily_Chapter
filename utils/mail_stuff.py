@@ -79,7 +79,7 @@ def get_html() -> str:
     Returns:
         A string of html content
     '''
-    with open("../resources/mailpage.html", "r") as html_src:
+    with open("../resources/html/mailpage.html", "r") as html_src:
         body = "".join([i for i in html_src])
     return body
 

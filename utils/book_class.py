@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup
-import ebooklib
+import ebooklib, pickle, os
 from ebooklib import epub
 
 
 class Book:
     def __init__(self, fileName):
-        self.file = fileName
-        self.data = self.load_epub(self.file)
+        self.epub_name = fileName
+        self.filename = fileName.split(".")[0]
+        self.data = self.load_epub(self.epub_name)
         self.title = self.data.title
         self.chapters = self.get_chapters()
         self.chapter_text = dict()
@@ -17,7 +18,7 @@ class Book:
 
 
     def load_epub(self, fName):
-        return epub.read_epub(f"../resources/books/{fName}")
+        return epub.read_epub(f"../resources/files/books/{fName}")
 
 
     def get_chapters(self):
@@ -30,8 +31,15 @@ class Book:
         return ' '.join(text)
 
 
+    def to_pickle(self):
+        with open(f"../resources/files/pickles/{self.filename}.pickle", "wb") as out:
+            pickle.dump(self, out)
+
+
 if __name__ == "__main__":
-    bk = Book("moby_dick.epub")
-    for ch in bk.chapter_text.keys():
-        print(bk.chapter_text[ch])
-        input()
+    epubs = os.listdir("../resources/files/books/")
+    pickles = os.listdir("../resources/files/pickles/")
+    for file in epubs:
+        if f"{file.split(".")[0]}.pickle" not in pickles:
+            curr_book = Book(file)
+            curr_book.to_pickle()
