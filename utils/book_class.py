@@ -19,14 +19,14 @@ class Book:
             i += 1
 
 
-    def load_epub(self, fName):
+    def load_epub(self, fName) -> epub.EpubBook:
         '''
         Loads the epub data
         '''
         return epub.read_epub(f"../resources/files/books/{fName}")
 
 
-    def get_chapters(self):
+    def get_chapters(self) -> list:
         '''
         Gets a list of all non-empty chapters from the epub data
         '''
@@ -39,7 +39,7 @@ class Book:
         return out
 
 
-    def get_chapter_text(self, chapter: epub.EpubHtml):
+    def get_chapter_text(self, chapter: epub.EpubHtml) -> str:
         '''
         Gets the text of the chapter from each object in self.chapters
         '''

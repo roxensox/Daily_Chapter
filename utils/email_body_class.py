@@ -8,18 +8,30 @@ class HTMLBody:
 
 
     def add_chapter_text(self, text):
+        '''
+        Adds the input string (should be chapter text) to the field marked to receive it
+        '''
         self.content.find(id="text").string = text
 
 
     def add_username(self, user_name):
+        '''
+        Adds the user's name to the field marked to receive it
+        '''
         self.content.find(id="user_name").string = f"Your daily chapter is here, {user_name}!"
 
 
     def add_title(self, title):
+        '''
+        Adds the book title to the field marked to receive it
+        '''
         self.content.find(id="book_title").string = title
 
 
-    def export(self):
+    def export(self) -> str:
+        '''
+        Returns the HTML version of this object as a string
+        '''
         return self.content.decode()
 
 
