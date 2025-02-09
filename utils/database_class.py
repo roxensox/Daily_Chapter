@@ -41,7 +41,12 @@ class DB_Accessor:
         '''
         Gets the chapter text for the user's currently chosen chapter based on their user id
         '''
-        return self.connection.execute("SELECT chapter_text FROM chapters JOIN (SELECT * FROM users JOIN choices ON UserID = user) AS user_choices ON chapters.book_id = user_choices.book_id WHERE UserID = ?", [id]).fetchall()[0][0]
+        max_chapters, book_id, chapter_num, chapter_text = self.connection.execute("SELECT chapter_count, book_id, chapter, chapter_text FROM books JOIN (SELECT * FROM chapters JOIN (SELECT * FROM users JOIN choices ON UserID = user) AS user_choices ON chapters.book_id = user_choices.book_id) ON book_id = books.id AND chapter_number = chapter WHERE UserID = ?", [id]).fetchall()[0]
+
+        if max_chapters > chapter_num:
+            self.connection.execute("UPDATE choices SET chapter = ? WHERE user = ?;", [chapter_num + 1, id])
+            self.connection.commit()
+        return chapter_text
 
 
 if __name__ == "__main__":
