@@ -20,14 +20,29 @@ class Book:
 
 
     def load_epub(self, fName):
+        '''
+        Loads the epub data
+        '''
         return epub.read_epub(f"../resources/files/books/{fName}")
 
 
     def get_chapters(self):
-        return [i for i in list(self.data.get_items_of_type(ebooklib.ITEM_DOCUMENT)) if i.is_chapter()]
+        '''
+        Gets a list of all non-empty chapters from the epub data
+        '''
+        out = list()
+        for item in list(self.data.get_items_of_type(ebooklib.ITEM_DOCUMENT)):
+            soup = BeautifulSoup(item.get_body_content(), "html.parser")
+            text = ' '.join([p.get_text() for p in soup.findAll("p")])
+            if item.is_chapter() and text.strip() != "":
+                out.append(item)
+        return out
 
 
     def get_chapter_text(self, chapter: epub.EpubHtml):
+        '''
+        Gets the text of the chapter from each object in self.chapters
+        '''
         soup = BeautifulSoup(chapter.get_body_content(), "html.parser")
         text = [p.get_text() for p in soup.findAll("p")]
         return ' '.join(text)

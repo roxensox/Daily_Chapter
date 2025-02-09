@@ -1,3 +1,4 @@
 resources/files
 resources/html
 utils/__pycache__
+*.html
