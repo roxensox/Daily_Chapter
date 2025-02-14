@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
+from globals import PATH
 
 
 class HTMLBody:
     def __init__(self):
-        soup = BeautifulSoup(open("../resources/html/mailpage.html", "r"), "html.parser")
+        soup = BeautifulSoup(open(os.path.join(PATH, "../resources/html/mailpage.html"), "r"), "html.parser")
         self.content = soup
 
 

@@ -2,6 +2,7 @@ import os.path
 import base64
 import json
 import quickstart as qs
+from globals import PATH
 from email_body_class import HTMLBody
 from book_class import Book
 from google.auth.transport.requests import Request
@@ -33,7 +34,7 @@ def get_contacts() -> list:
         A list of email addresses
     '''
     contacts = []
-    with open("../../Contacts/contacts.txt", "r") as source:
+    with open(os.path.join(PATH, "../../Contacts/contacts.txt"), "r") as source:
         contacts = [line.strip() for line in source]
     return contacts
 
@@ -79,7 +80,7 @@ def get_html() -> str:
     Returns:
         A string of html content
     '''
-    with open("../resources/html/mailpage.html", "r") as html_src:
+    with open(os.path.join(PATH, "../resources/html/mailpage.html"), "r") as html_src:
         body = "".join([i for i in html_src])
     return body
 

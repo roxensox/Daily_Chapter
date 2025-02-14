@@ -23,7 +23,7 @@ class Book:
         '''
         Loads the epub data
         '''
-        return epub.read_epub(f"../resources/files/books/{fName}")
+        return epub.read_epub(os.path.join(PATH, f"../resources/files/books/{fName}"))
 
 
     def get_chapters(self) -> list:

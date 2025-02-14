@@ -1,10 +1,11 @@
 import sqlite3, pickle, os
+from globals import PATH
 from book_class import Book
 
 
 class DB_Accessor:
     def __init__(self):
-        self.connection = sqlite3.connect("../resources/book_data.db")
+        self.connection = sqlite3.connect(os.path.join(PATH, "../resources/book_data.db"))
         self.refresh_titles()
 
 
@@ -50,7 +51,6 @@ class DB_Accessor:
 
 
 if __name__ == "__main__":
-    x = DB_Accessor()
-    y = x.get_users()
-    for i in y:
-        print(x.get_chapter(i[0]))
+    conn = DB_Accessor()
+    book = Book("frankenstein.epub")
+    conn.add_book(book)

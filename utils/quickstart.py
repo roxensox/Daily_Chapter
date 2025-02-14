@@ -27,28 +27,28 @@ def main():
             print(label["name"])
 
     except HttpError as error:
-        # TODO(developer) - Handle errors from gmail API.
+        #TODO: - Handle errors from gmail API.
         print(f"An error occurred: {error}")
 
 
 def get_session():
     creds = None
     flow = InstalledAppFlow.from_client_secrets_file(
-        "../../Credentials/credentials.json", SCOPES
+        "../secure/credentials.json", SCOPES
     )
-    if os.path.exists("../../Credentials/token.json"):
+    if os.path.exists("../secure/token.json"):
         creds = Credentials.from_authorized_user_file(
-            "../../Credentials/token.json", SCOPES)
+            "../secure/token.json", SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "../../Credentials/credentials.json", SCOPES
+                "../secure/credentials.json", SCOPES
             )
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-    with open("../../Credentials/token.json", "w") as token:
+    with open("../secure/token.json", "w") as token:
         token.write(creds.to_json())
     service = build("gmail", "v1", credentials=creds)
     return service
