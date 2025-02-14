@@ -34,7 +34,7 @@ class DB_Accessor:
         '''
         Gets a list of tuples of all UserIDs and corresponding email addresses from the users table
         '''
-        results = self.connection.execute("SELECT UserID, email FROM users;")
+        results = self.connection.execute("SELECT UserID, email, last_mail FROM users;")
         return [i for i in results]
 
 
@@ -46,6 +46,7 @@ class DB_Accessor:
 
         if max_chapters > chapter_num:
             self.connection.execute("UPDATE choices SET chapter = ? WHERE user = ?;", [chapter_num + 1, id])
+            self.connection.execute("INSERT INTO records (user_id, book_id, current_chapter) VALUES (?, ?, ?)", [user, chapter_num])
             self.connection.commit()
         return chapter_text
 

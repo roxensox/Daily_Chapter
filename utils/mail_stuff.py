@@ -2,6 +2,7 @@ import os.path
 import base64
 import json
 import quickstart as qs
+import database_class as db
 from globals import PATH
 from email_body_class import HTMLBody
 from book_class import Book
@@ -33,9 +34,8 @@ def get_contacts() -> list:
     Returns:
         A list of email addresses
     '''
-    contacts = []
-    with open(os.path.join(PATH, "../../Contacts/contacts.txt"), "r") as source:
-        contacts = [line.strip() for line in source]
+    data = db.DB_Accessor()
+    contacts = [i for i in data.get_users()]
     return contacts
 
 
