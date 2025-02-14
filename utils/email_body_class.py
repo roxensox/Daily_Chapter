@@ -18,7 +18,7 @@ class HTMLBody:
         p_string = ""
         for line in lines:
             if line.strip() != "":
-                p_string += line
+                p_string += line + " "
             else:
                 paragraphs.append(p_string)
                 p_string = ""

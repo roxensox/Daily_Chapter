@@ -55,5 +55,5 @@ class DB_Accessor:
 
 if __name__ == "__main__":
     conn = DB_Accessor()
-    book = Book("frankenstein.epub")
+    book = Book("huckleberry_finn.epub")
     conn.add_book(book)

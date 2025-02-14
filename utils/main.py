@@ -21,7 +21,7 @@ def main():
             chapter_num = data["chapter_number"]
             book_title = data["book_title"]
             body.add_title(f"{book_title} - Chapter {chapter_num}")
-            body.add_username(data["name"])
+            #body.add_username(data["name"])
             subject = f"Your chapter is ready, {data["name"]}!"
             body = body.export()
             ms.create_email(body=body, subject=subject, recipients=[c[1]], session=session)
