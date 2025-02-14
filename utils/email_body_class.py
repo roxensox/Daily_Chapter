@@ -1,3 +1,4 @@
+import os
 from bs4 import BeautifulSoup
 from globals import PATH
 
@@ -12,7 +13,24 @@ class HTMLBody:
         '''
         Adds the input string (should be chapter text) to the field marked to receive it
         '''
-        self.content.find(id="text").string = text
+        lines = text.split("\n")
+        paragraphs = []
+        p_string = ""
+        for line in lines:
+            if line.strip() != "":
+                p_string += line
+            else:
+                paragraphs.append(p_string)
+                p_string = ""
+        paragraphs = [i for i in paragraphs if i != ""]
+
+
+        for i, paragraph in enumerate(paragraphs):
+            new_div = self.content.new_tag("div", id = f"line{i}")
+            new_br = self.content.new_tag("br")
+            self.content.find(id="text").append(new_div)
+            self.content.find(id=f"line{i}").string = f"\t{paragraph}"
+            self.content.find(id="text").append(new_br)
 
 
     def add_username(self, user_name):

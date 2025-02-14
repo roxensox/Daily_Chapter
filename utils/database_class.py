@@ -1,4 +1,4 @@
-import sqlite3, pickle, os
+import sqlite3, pickle, os, datetime
 from globals import PATH
 from book_class import Book
 
@@ -38,17 +38,19 @@ class DB_Accessor:
         return [i for i in results]
 
 
-    def get_chapter(self, id: int) -> str:
+    def get_chapter(self, id: int) -> dict:
         '''
         Gets the chapter text for the user's currently chosen chapter based on their user id
         '''
-        max_chapters, book_id, chapter_num, chapter_text = self.connection.execute("SELECT chapter_count, book_id, chapter, chapter_text FROM books JOIN (SELECT * FROM chapters JOIN (SELECT * FROM users JOIN choices ON UserID = user) AS user_choices ON chapters.book_id = user_choices.book_id) ON book_id = books.id AND chapter_number = chapter WHERE UserID = ?", [id]).fetchall()[0]
+        max_chapters, book_id, title, chapter_num, chapter_text, name = self.connection.execute("SELECT chapter_count, book_id, title, chapter, chapter_text, first_name FROM books JOIN (SELECT * FROM chapters JOIN (SELECT * FROM users JOIN choices ON UserID = user) AS user_choices ON chapters.book_id = user_choices.book_id) ON book_id = books.id AND chapter_number = chapter WHERE UserID = ?", [id]).fetchall()[0]
 
-        if max_chapters > chapter_num:
+        is_final = max_chapters == chapter_num
+        if not is_final:
             self.connection.execute("UPDATE choices SET chapter = ? WHERE user = ?;", [chapter_num + 1, id])
-            self.connection.execute("INSERT INTO records (user_id, book_id, current_chapter) VALUES (?, ?, ?)", [user, chapter_num])
+            self.connection.execute("INSERT INTO records (user_id, book_id, current_chapter) VALUES (?, ?, ?)", [id, book_id, chapter_num])
+            self.connection.execute("UPDATE users SET last_mail = datetime('now', 'localtime') WHERE UserID = ?", [id])
             self.connection.commit()
-        return chapter_text
+        return {"chapter_text": chapter_text, "chapter_number": chapter_num, "is_final": is_final, "book_title": title, "name": name}
 
 
 if __name__ == "__main__":

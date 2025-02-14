@@ -39,7 +39,7 @@ def get_contacts() -> list:
     return contacts
 
 
-def create_email(body: str, subject: str, recipients: list, sender: str) -> int:
+def create_email(body: str, subject: str, recipients: list, session: object) -> int:
     '''
     Creates and sends an email message with html content
 
@@ -55,7 +55,6 @@ def create_email(body: str, subject: str, recipients: list, sender: str) -> int:
     email = EmailMessage()
     email.set_content(body, subtype="html")
     email["To"] = recipients
-    email["From"] = sender
     email["Subject"] = subject
 
     encoded_msg = base64.urlsafe_b64encode(email.as_bytes()).decode()

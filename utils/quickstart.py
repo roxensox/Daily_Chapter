@@ -1,4 +1,5 @@
 import os.path
+from globals import PATH
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -7,7 +8,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://mail.google.com/"]
+SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
 def main():
@@ -34,21 +35,21 @@ def main():
 def get_session():
     creds = None
     flow = InstalledAppFlow.from_client_secrets_file(
-        "../secure/credentials.json", SCOPES
+        os.path.join(PATH, "../secure/credentials.json"), SCOPES
     )
-    if os.path.exists("../secure/token.json"):
+    if os.path.exists(os.path.join(PATH, "../secure/token.json")):
         creds = Credentials.from_authorized_user_file(
-            "../secure/token.json", SCOPES)
+            os.path.join(PATH, "../secure/token.json"), SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "../secure/credentials.json", SCOPES
+                os.path.join(PATH, "../secure/credentials.json"), SCOPES
             )
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-    with open("../secure/token.json", "w") as token:
+    with open(os.path.join(PATH, "../secure/token.json"), "w") as token:
         token.write(creds.to_json())
     service = build("gmail", "v1", credentials=creds)
     return service
