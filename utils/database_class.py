@@ -54,6 +54,7 @@ class DB_Accessor:
 
 
 if __name__ == "__main__":
-    conn = DB_Accessor()
-    book = Book("hound_of_baskervilles.epub")
-    conn.add_book(book)
+    for book in os.listdir(os.path.join(PATH, "../resources/files/books/")):
+        conn = DB_Accessor()
+        book = Book(book)
+        conn.add_book(book)

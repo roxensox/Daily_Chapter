@@ -6,7 +6,7 @@ from globals import PATH
 
 
 def main():
-    delta = datetime.timedelta(days=0)
+    delta = datetime.timedelta(days=1)
     while True:
         contacts = ms.get_contacts() 
         x = datetime.datetime.strptime(contacts[0][2], "%Y-%m-%d %H:%M:%S")
